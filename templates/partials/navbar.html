@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Navbar</title>
+
+<link rel="stylesheet" href="{{url_for('static', filename = 'navbar.css')}}">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Merienda+One">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+
+
+
+    
+
+
+</head> 
+<body>
+<nav class="navbar navbar-expand-xl navbar-dark bg-primary">
+	<a href="/timeline" class="navbar-brand"><i class="fab fa-twitter"></i><b>Twitter</b></a>
+	<button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+		<span class="navbar-toggler-icon"></span>
+	</button>
+	
+	
+	<!-- Collection of nav links, forms, and other content for toggling -->
+{% if user_data %}
+	<div id="navbarCollapse" class="collapse navbar-collapse justify-content-start"  >
+		<form class="navbar-form form-inline ml-auto mr-3" id="searchForm" method="POST" action='/search'>
+			<div class="input-group search-box">								
+				<input type="text" id="search" class="form-control" placeholder="Use @ to search user or search by tweet" style="width:350px" name="searchfilter">
+				<button type="submit" class="input-group-addon"><i class="material-icons">&#xE8B6;</i></button>
+				<!-- <span class="btn input-group-addon" onclick=""><i class="material-icons">&#xE8B6;</i></span> -->
+			</div>
+		</form>
+		<div class="navbar-nav ">
+			<div class="nav-item dropdown">
+				       
+				<a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle user-action"><img src="{{ url_for('static', filename='images/profile.png') }}" class="avatar" alt="Avatar"> <b class="caret"></b></a>
+				<div class="dropdown-menu dropdown-menu-right">
+					<a href="/profile" class="dropdown-item"><i class="fa fa-user-o"></i> Profile</a></a>
+					
+					<div class="dropdown-divider"></div>
+					<div id="firebase-auth-container" hidden></div>
+
+					<button id="sign-out" class="dropdown-item" ><i class="fa fa-sign-out"></i> Sign out</button>
+					
+  
+
+				</div>
+			</div>
+		</div>
+	</div>
+	
+{% endif %}
+</nav>
+
+
+</body>
+</html>                            

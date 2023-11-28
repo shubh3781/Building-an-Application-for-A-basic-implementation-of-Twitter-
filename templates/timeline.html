@@ -1,0 +1,215 @@
+{% extends 'base.html' %}
+
+{% block css %}
+<link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='textarea.css') }}">
+
+<link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='profile.css') }}">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+<style>
+    input[type="file"].novisible {
+        display: none;
+    }
+    input[type="file"].novisible + label {
+     width:200px;
+     height:200px;
+     cursor: pointer;
+     display:inline-flex;
+     justify-content:center;
+     align-items:center;
+    }
+    .tweet_image {
+        height: 200px;
+        width: auto;
+        border-radius: 10px;
+        margin: 10px auto 20px;
+    }
+    .tweet_image:hover {
+        cursor: pointer;
+    }
+    
+</style>
+
+{% endblock  %}
+
+{% block content %}
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Edit Information</h5>
+
+        </div>
+        <div class="modal-body">
+            <form method="POST" enctype="multipart/form-data" > 
+                <div class="form-group">
+                  <label for="username">Username </label>
+                  <input type="text" class="form-control" id="username" name="username"  placeholder="Enter username" >
+                </div>
+                <div class="form-group">
+                    <label for="fullname">Full Name </label>
+                    <input type="text" class="form-control" id="fullname" name="fullname"  placeholder="Enter fullname" >
+                  </div>
+
+
+            </div>
+            <span id='msg' hidden="true">Username already exists</span>
+            <div class="modal-footer">
+                <input type="submit" id="submit"  class="btn btn-primary" >
+            </div>
+            </form> 
+                
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+   <div class="container profile">
+       <div class="row">
+<div class="col-md-2">
+
+</div>
+           
+<div class="col-md-8">
+
+    <div class="container">
+
+        
+        <form action="/addtweet" method="post" id="addTweetForm" enctype="multipart/form-data"  >
+
+        <div class="wrapper">
+           
+           <div class="input-box" >
+              <div class="tweet-area" id="desc" >
+                <span class="placeholder">What's happening?</span>
+                <input placeholder="What's happening?" type='textarea' id="tweet_desc"name="desc" class="input editable" contenteditable="true" style='width:100%'spellcheck="false">
+                <div class="input readonly" contenteditable="true" spellcheck="false"></div>
+              </div>
+              
+            </div>
+           
+            <div class="bottom">
+              <ul class="icons">
+                <li>
+                    <input type="file" class="novisible" name="file_name" id="file_upload" accept=".jpeg,.png">
+                 <label for="file_upload">
+                    <i  class="far fa-file-image"></i>
+
+                 </label>
+                        
+                 
+                </li>
+
+              </ul>
+              <div class="content">
+                <span class="counter">280</span>
+                <input type="submit" id="create" value="Tweet" style="color: #ffffff;
+                background: #7dbcf3; border-radius: 80%;  border: blue;">
+                
+              </div>
+            </div>
+          </div>
+        </form>
+
+<!-- loop through here -->
+
+{% if tweets %}
+{% for tweet in tweets %}
+
+        <div class="card mt-5 border-5 pt-2 active pb-0 px-3">
+            <div class="card-body ">
+                <div class="row">
+                    <div class="col-12 ">
+                        <h4 class="card-title ">
+                          <img src="{{ url_for('static', filename='images/profile.png') }}" alt="DP" class=" rounded-circle img-fluid " width="45" height="45">
+
+                            <a style=color:black href='/profile/{{tweet.username}}'><b>{{tweet['full_name']}}</b></a>
+                            <small style="font-weight: lighter;">{{tweet['username']}} | {{tweet.date[:10]}}</small>
+                        </h4>
+                    </div>
+                    <div class="col ml-5">
+                        <h6 class="card-subtitle mb-2 text-muted">
+                            <p class="card-text text-muted ">{{tweet.desc}}</p>
+                            <img src="{{tweet.media}}"  class="tweet_image"/>
+                        </h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        {% endif %}
+
+
+
+    </div>
+
+</div>
+
+<div class="col-md-2">
+
+</div>
+       </div>
+   </div>
+
+
+
+
+{% endblock  %}
+
+
+{% block scripts %}
+<script>
+    {% if not user_name %}
+        {% if user_data %}
+       
+        $("#exampleModal").modal({backdrop: 'static'});
+
+  
+{% endif %}
+    {% endif %}
+    $("#submit").click(function(){
+        console.log($("#username").val());
+        {% if msg == "good" %}
+        
+        $("#exampleModal").attr('data-dismiss','modal');
+    {% if msg=='username already exists' %}
+    $('#msg').removeAttr('hidden')
+    {% endif %}
+    {% endif %}
+    
+      });
+</script>
+
+<script src="{{ url_for('static', filename='textarea.js') }}"></script>
+
+<script>
+    function create(){
+        var desc = window.document.getElementById('tweet_desc').innerHTML;
+        
+        var data = new FormData();
+        data.append('desc',desc)
+        var media = jQuery('#file_upload')[0].files[0]
+        data.append('media',media)
+        console.log(data)
+        $.ajax({
+            url:'/addtweet',
+            data: data,
+            cache: false,
+            contentType: false,
+            processData: false,
+            method: 'POST',
+            type: 'POST', // For jQuery < 1.9
+    success: function(){
+        window.location.reload();
+    }
+    })
+    }
+</script>
+
+
+{% endblock  %}

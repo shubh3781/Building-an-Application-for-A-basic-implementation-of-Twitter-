@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% block css %}
+<link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='profile.css') }}">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+{% endblock  %}
+
+{% block content %}
+
+   <div class="container  mb-5">
+       <div class="row">
+<div class="col-md-2">
+
+</div>
+           
+<div class="col-md-8">
+
+    <div class="container">  
+
+<!-- loop through here -->
+        <div class="card mt-5 border-5 pt-2 active pb-0 px-3">
+            <div class="card-body ">
+                <div class="row">
+                    <div class="col-12 ">
+                        <h4 class="card-title ">
+                            Edit Profile    
+                        </h4>
+
+                    </div>
+                    <div class="col ">
+                        
+                            <form>
+                                
+
+                                <div class="mb-3">
+                                  <label for="exampleInputEmail1" class="form-label">Email address</label>
+                                  <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter Email">
+                                  
+                                </div>
+
+                                <div class="mb-3">
+                                  <label for="exampleInputPassword1" class="form-label">Password</label>
+                                  <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Enter Passoword">
+                                </div>
+
+
+                                  <div class=" mb-3">
+                                      <label for="floatingTextarea" class="form-label">Bio</label>
+                                      <textarea class="form-control" placeholder="Enter Your Bio" id="floatingTextarea"></textarea>
+                                  </div>
+
+                                  <div class="mb-4">
+                                    <label for="image" class="form-label">Profile Picture</label>
+                                    <input type="file" class="form-control" id="image">                                    
+                                  </div>
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                              </form>
+                            
+  
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+</div>
+
+</div>
+<div class="col-md-2">
+
+</div>
+
+</div>
+</div>
+
+
+
+
+
+
+
+{% endblock  %}
+
+
+{% block scripts %}
+
+<script src="{{ url_for('static', filename='textarea.js') }}"></script>
+
+{% endblock  %}
+

@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+
+{% block css %}
+
+<link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='profile.css') }}">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+<style>
+    .tweet_image {
+        height: 200px;
+        width: auto;
+        border-radius: 10px;
+        margin: 10px auto 20px;
+    }
+    .tweet_image:hover {
+        cursor: pointer;
+    }
+</style>
+
+{% endblock  %}
+
+{% block content %}
+
+{% if users %}
+{% for user in users %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <div class="card mt-5 border-5 pt-2 active pb-0 px-3">
+                <div class="card-body ">
+                    <div class="row">
+                        <div class="col-12 ">
+                            <h4 class="card-title ">
+                                <img src="{{ url_for('static', filename='images/profile.png') }}" alt="DP" class=" rounded-circle img-fluid " width="45" height="45">
+                                <a href="/profile/{{user.username}}"  style="text-decoration: none; color:black"><b>{{ user.full_name }} </b></a>
+                                <small style="font-weight: lighter;">{{ user.username }} </small>
+                            </h4>
+                        </div>
+                        <div class="col ml-5">
+                            
+                            <div>
+                                <i class="fa fa-users"></i>
+                                <p>Followers:  {{ user.followers|length }} </p>
+                                <i class="fa fa-users"></i>
+                                <p>Following: {{ user.following|length }}  </p>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-3"></div>
+    </div>
+</div>
+
+{% endfor %}
+{% endif %}
+
+{% if tweets %}
+{% for tweet in tweets %}
+   <div class="container ">
+       <div class="row">
+
+
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+
+   
+
+        <!-- loop through here -->
+                <div class="card border-5 pt-2 active pb-0 px-3">
+                    <div class="card-body ">
+                        <div class="row">
+                            <div class="col-12 ">
+                                <h4 class="card-title ">
+                                    <img src="{{ url_for('static', filename='images/profile.png') }}" alt="DP" class=" rounded-circle img-fluid " width="45" height="45">
+                                    <a href="/profile/{{tweet.username}}" style="text-decoration: none; color:black"><b>{{ tweet['full_name'] }}</b></a>
+                                    <small style="font-weight: lighter;">{{ tweet['username'] }} | {{ tweet['date'][:10] }} </small>
+                                </h4>
+                            </div>
+                            <div class="col ml-5">
+                                <h6 class="card-subtitle mb-2 text-muted">
+                                    <p class="card-text text-muted "> {{ tweet['desc'] }}</p>
+                                    <img src="{{tweet.media}}"  class="tweet_image"/>
+
+                                </h6>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                </div>
+
+            </div>           
+ 
+            <div class="col-md-3"></div>
+
+            
+       </div>
+   </div>
+   {% endfor %}
+   {% endif %}
+
+
+{% endblock  %}
+
+
+{% block scripts %}
+
+<script>
+    var countButton = document.getElementById("followButton");
+    var displayCount = document.getElementById("followers");
+    countButton.onclick = function() {
+    if (countButton.innerText == "Follow") {
+        console.log("Following")
+        
+        countButton.innerText = "Unfollow";
+    } else if (countButton.innerText == "Unfollow") {
+        countButton.innerText = "Follow";
+        console.log("Unfollowed")
+    }
+    }
+$(document).on('submit','#follow-form',function(e)
+    {
+        var username = $("#username").val();
+        console.log(username);
+        e.preventDefault();
+         $.ajax({
+            type:'POST',
+            url:'/search',
+            contentType: 'application/json; charset=utf-8',
+            dataType:'json',
+            data:JSON.stringify({'username': username}),
+        
+            success:function()
+            {
+                console.log(username)
+        }
+
+        })
+    });
+</script>
+
+
+{% endblock  %}
